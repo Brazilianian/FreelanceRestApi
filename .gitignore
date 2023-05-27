@@ -1,4 +1,4 @@
-./idea
+.idea
 application.yml
 # Project exclude paths
 /target/
