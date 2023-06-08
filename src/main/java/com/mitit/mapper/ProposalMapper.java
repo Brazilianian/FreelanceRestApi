@@ -2,17 +2,24 @@ package com.mitit.mapper;
 
 import com.mitit.domain.Proposal;
 import com.mitit.dto.ProposalDto;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ProposalMapper {
+
+    private final FreelanceSiteMapper freelanceSiteMapper;
+
     public List<ProposalDto> fromObjectListToDtoList(List<Proposal> proposals) {
         List<ProposalDto> proposalDtoList = new ArrayList<>();
         for (Proposal proposal : proposals) {
-            proposalDtoList.add(ProposalDto.of(proposal));
+            ProposalDto proposalDto = ProposalDto.from(proposal);
+            proposalDto.setFreelanceSite(freelanceSiteMapper.fromObjectToDto(proposal.getFreelanceSite()));
+            proposalDtoList.add(proposalDto);
         }
         return proposalDtoList;
     }

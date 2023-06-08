@@ -28,4 +28,7 @@ public class Proposal {
     private String description;
     private String link;
     private String additional_info_tags;
+
+    @OneToOne
+    private FreelanceSite freelanceSite;
 }

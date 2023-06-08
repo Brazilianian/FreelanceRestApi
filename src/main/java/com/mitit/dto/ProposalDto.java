@@ -1,8 +1,8 @@
 package com.mitit.dto;
 
 import com.mitit.domain.Proposal;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,13 +11,17 @@ import java.util.List;
 
 @Getter
 public class ProposalDto {
-    private int id;
+    private final int id;
 
-    private String title;
-    private String price;
-    private LocalDateTime posted_date;
-    private String description;
-    private String link;
+    private final String title;
+    private final String price;
+    private final LocalDateTime posted_date;
+    private final String description;
+    private final String link;
+
+    @Setter
+    private FreelanceSiteDto freelanceSite;
+
     private List<String> additional_info_tags = new ArrayList<>();
 
     private void setAdditional_info_tags(List<String> additional_info_tags) {
@@ -33,7 +37,7 @@ public class ProposalDto {
         this.link = link;
     }
 
-    public static ProposalDto of(Proposal proposal) {
+    public static ProposalDto from(Proposal proposal) {
         ProposalDto proposalDto = new ProposalDto(
                 proposal.getId(),
                 proposal.getTitle(),
