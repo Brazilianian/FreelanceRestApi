@@ -20,6 +20,4 @@ public class FreelanceSite {
 
     private String name;
     private String link;
-
-
 }

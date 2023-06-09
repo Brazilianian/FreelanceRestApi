@@ -20,7 +20,7 @@ public class ProposalDto {
     private final String link;
 
     @Setter
-    private FreelanceSiteDto freelanceSite;
+    private FreelanceSiteDto freelance_site;
 
     private List<String> additional_info_tags = new ArrayList<>();
 
