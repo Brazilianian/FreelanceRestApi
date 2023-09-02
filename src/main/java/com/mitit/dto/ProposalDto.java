@@ -18,6 +18,7 @@ public class ProposalDto {
     private final LocalDateTime posted_date;
     private final String description;
     private final String link;
+    private final List<SubcategoryDto> subcategories = new ArrayList<>();
 
     @Setter
     private FreelanceSiteDto freelance_site;
@@ -48,6 +49,7 @@ public class ProposalDto {
         );
 
         proposalDto.setAdditional_info_tags(Arrays.stream(proposal.getAdditional_info_tags().split( ",")).toList());
+
 
         return proposalDto;
     }

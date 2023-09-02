@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -31,4 +33,11 @@ public class Proposal {
 
     @OneToOne
     private FreelanceSite freelanceSite;
+
+    @ManyToMany
+    @JoinTable(
+            name = "proposals_subcategories",
+            joinColumns = @JoinColumn(name = "proposal_id"),
+            inverseJoinColumns = @JoinColumn(name = "subcategory_id"))
+    private List<Subcategory> subcategories = new ArrayList<>();
 }

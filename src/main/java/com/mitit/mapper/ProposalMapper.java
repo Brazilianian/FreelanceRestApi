@@ -13,12 +13,21 @@ import java.util.List;
 public class ProposalMapper {
 
     private final FreelanceSiteMapper freelanceSiteMapper;
+    private final SubcategoryMapper subcategoryMapper;
 
     public List<ProposalDto> fromObjectListToDtoList(List<Proposal> proposals) {
         List<ProposalDto> proposalDtoList = new ArrayList<>();
         for (Proposal proposal : proposals) {
             ProposalDto proposalDto = ProposalDto.from(proposal);
-            proposalDto.setFreelanceSite(freelanceSiteMapper.fromObjectToDto(proposal.getFreelanceSite()));
+
+            proposalDto.setFreelance_site(freelanceSiteMapper.fromObjectToDto(proposal.getFreelanceSite()));
+            proposalDto.getSubcategories().addAll(
+                    proposal.getSubcategories()
+                            .stream()
+                            .map(subcategoryMapper::fromObjectToDto)
+                            .toList()
+            );
+
             proposalDtoList.add(proposalDto);
         }
         return proposalDtoList;
