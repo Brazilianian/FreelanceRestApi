@@ -1,7 +1,12 @@
 package com.mitit.dto;
 
-import com.mitit.domain.Chat;
+import com.mitit.domain.chat.Chat;
+import com.mitit.domain.chat.State;
+import com.mitit.domain.chat.Status;
 import lombok.Getter;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class ChatDto {
@@ -11,14 +16,17 @@ public class ChatDto {
     private final String last_name;
     private final String status;
     private final String state;
+    private final LocalDateTime last_message_datetime;
 
-    private ChatDto(Long chatId, String username, String firstName, String lastName, String status, String state) {
-        chat_id = chatId;
+    private ChatDto(Long chatId, String username, String firstName, String lastName,
+                    String status, String state, LocalDateTime last_message_datetime) {
+        this.chat_id = chatId;
         this.username = username;
-        first_name = firstName;
-        last_name = lastName;
+        this.first_name = firstName;
+        this.last_name = lastName;
         this.status = status;
         this.state = state;
+        this.last_message_datetime = last_message_datetime;
     }
 
     public static ChatDto from(Chat chat) {
@@ -26,7 +34,8 @@ public class ChatDto {
                 chat.getUsername(),
                 chat.getFirstName(),
                 chat.getLastName(),
-                chat.getStatus(),
-                chat.getState());
+                chat.getStatus().toString(),
+                chat.getState().toString(),
+                chat.getLastMessageDateTime());
     }
 }

@@ -29,6 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{category_id}")
+    @ResponseBody
     public CategoryDto getCategoryById(@PathVariable(name = "category_id") Long categoryId) {
         return categoryMapper.fromObjectToJson(categoryService.getCategoryById(categoryId));
     }
@@ -37,7 +38,7 @@ public class CategoryController {
     @ResponseBody
     public boolean chooseSubscriptionByCategoryId(@PathVariable(name = "category_id") Long categoryId,
                                                   @PathVariable(name = "chat_id") Long chatId) {
-        categoryService.updateSubscription(categoryId, chatId);
+        categoryService.updateSubscriptionOfCategory(categoryId, chatId);
         return true;
     }
 }

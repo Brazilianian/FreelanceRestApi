@@ -1,8 +1,10 @@
 package com.mitit.service;
 
 import com.mitit.domain.Category;
-import com.mitit.domain.Chat;
+import com.mitit.domain.chat.Chat;
 import com.mitit.domain.Subcategory;
+import com.mitit.exception.notfound.CategoryNotFoundException;
+import com.mitit.exception.notfound.SubcategoryNotFoundException;
 import com.mitit.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,15 @@ public class CategoryService {
         return categoryRepo.findAllByFreelanceSite_Name(freelanceSiteName);
     }
 
-    public void updateSubscription(Long categoryId, Long chatId) {
+    public void updateSubscriptionOfCategory(Long categoryId, Long chatId) {
         Chat chat = chatService.getChatById(chatId);
         Subcategory subcategory = chat.getSubcategories()
                 .stream()
                 .filter(s -> s.getCategory().getId().equals(categoryId))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new SubcategoryNotFoundException(
+                        String.format("Can`t find any subcategory of category with id %s by chat with id %s", categoryId, chatId))
+                );
 
         if (subcategory == null) {
             List<Subcategory> subcategories = subcategoryService.getSubcategoriesByCategoryId(categoryId);
@@ -63,6 +67,7 @@ public class CategoryService {
     }
 
     public Category getCategoryById(Long categoryId) {
-        return categoryRepo.findById(categoryId).orElse(null);
+        return categoryRepo.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(String.format("Category with id %s was not found", categoryId)));
     }
 }

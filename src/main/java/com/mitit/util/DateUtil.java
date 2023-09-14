@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 
 @Service
 public class DateUtil {
-    public LocalDateTime parseDateByPattern(String date, String pattern) {
+    public static LocalDateTime parseDateByPattern(String date, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         try {
             return LocalDateTime.parse(date, formatter);

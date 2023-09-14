@@ -1,5 +1,6 @@
 package com.mitit.domain;
 
+import com.mitit.domain.chat.Chat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
