@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -56,6 +57,8 @@ public class ChatService {
                     String.format("Failed to save new chat - chat with id %s already exists", chat.getChatId())
             );
         }
+
+        chat.setLastMessageDateTime(LocalDateTime.now().with(LocalTime.MIDNIGHT));
 
         return save(chat);
     }
