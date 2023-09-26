@@ -1,18 +1,18 @@
 package com.mitit.controller;
 
+import com.mitit.domain.FreelanceSite;
 import com.mitit.domain.chat.Chat;
 import com.mitit.domain.chat.State;
 import com.mitit.domain.chat.Status;
 import com.mitit.dto.ChatDto;
 import com.mitit.mapper.ChatMapper;
+import com.mitit.service.CategoryService;
 import com.mitit.service.ChatService;
+import com.mitit.service.FreelanceSiteService;
 import com.mitit.util.DateUtil;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.util.CharsetMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,6 +22,8 @@ public class ChatController {
 
     private final ChatService chatService;
     private final ChatMapper chatMapper;
+    private final CategoryService categoryService;
+    private final FreelanceSiteService freelanceSiteService;
 
     @GetMapping
     public List<ChatDto> getChats(@RequestParam(name = "status", required = false) Status status,
@@ -41,8 +43,14 @@ public class ChatController {
 
     @PostMapping
     public ChatDto addChat(@RequestBody ChatDto chatDto) {
-        Chat chat = chatMapper.fromDtoToObject(chatDto);
-        return chatMapper.fromObjectToDto(chatService.createChat(chat));
+        Chat chat = chatService.createChat(chatMapper.fromDtoToObject(chatDto));
+
+        // Add all subscriptions for new chat
+        for (FreelanceSite freelanceSite : freelanceSiteService.getFreelanceSites()) {
+            categoryService.addSubscriptionsToAllCategoriesOfFreelanceSite(freelanceSite.getName(), chat.getChatId());
+        }
+
+        return chatMapper.fromObjectToDto(chat);
     }
 
     @PutMapping("/{chat_id}/status")

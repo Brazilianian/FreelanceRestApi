@@ -1,10 +1,9 @@
 package com.mitit.service;
 
 import com.mitit.domain.Category;
-import com.mitit.domain.chat.Chat;
 import com.mitit.domain.Subcategory;
+import com.mitit.domain.chat.Chat;
 import com.mitit.exception.notfound.CategoryNotFoundException;
-import com.mitit.exception.notfound.SubcategoryNotFoundException;
 import com.mitit.repository.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,9 +28,7 @@ public class CategoryService {
                 .stream()
                 .filter(s -> s.getCategory().getId().equals(categoryId))
                 .findFirst()
-                .orElseThrow(() -> new SubcategoryNotFoundException(
-                        String.format("Can`t find any subcategory of category with id %s by chat with id %s", categoryId, chatId))
-                );
+                .orElse(null);
 
         if (subcategory == null) {
             List<Subcategory> subcategories = subcategoryService.getSubcategoriesByCategoryId(categoryId);
