@@ -2,3 +2,6 @@
 application.yml
 # Project exclude paths
 /target/
+
+/FreelanceRestApi.iml
+/META-INF
