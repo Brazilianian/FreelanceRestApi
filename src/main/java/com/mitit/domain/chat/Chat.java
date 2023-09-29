@@ -2,7 +2,9 @@ package com.mitit.domain.chat;
 
 import com.mitit.domain.Subcategory;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -14,40 +16,31 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "chats")
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Chat {
     @Id
-    @NonNull
     @Column(name = "chat_id")
     private Long chatId;
 
-    @NonNull
     @Column(name = "username")
     private String username;
 
-    @NonNull
     @Column(name = "first_name")
     private String firstName;
 
-    @NonNull
     @Column(name = "last_name")
     private String lastName;
 
-    @NonNull
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @NonNull
     @Column(name = "state")
     @Enumerated(value = EnumType.STRING)
     private State state;
 
-    @NonNull
     @Column(name = "last_message_datetime")
     private LocalDateTime lastMessageDateTime;
 
-    @NonNull
     @ManyToMany
     @JoinTable(
             name = "chats_subcategories",
@@ -60,6 +53,17 @@ public class Chat {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    private Chat(Long chatId, String username, String firstName, String lastName, Status status, State state, LocalDateTime lastMessageDateTime, List<Subcategory> subcategories) {
+        this.chatId = chatId;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.status = status;
+        this.state = state;
+        this.lastMessageDateTime = lastMessageDateTime;
+        this.subcategories = subcategories;
+    }
+
     public static class Builder {
         private final Long chatId;
         private String username;
@@ -68,6 +72,7 @@ public class Chat {
         private Status status;
         private State state;
         private LocalDateTime lastMessageDateTime;
+        private List<Subcategory> subcategories = new ArrayList<>();
 
         public Builder(Long chatId) {
             this.chatId = chatId;
@@ -103,9 +108,14 @@ public class Chat {
             return this;
         }
 
+        public Builder subcategories(List<Subcategory> subcategories) {
+            this.subcategories = subcategories;
+            return this;
+        }
+
         public Chat build() {
             return new Chat(chatId, username, firstName, lastName,
-                    status, state, lastMessageDateTime);
+                    status, state, lastMessageDateTime, subcategories);
         }
     }
 }
